@@ -1,12 +1,22 @@
 package main
 
 import (
+	"fmt"
 	"net"
 	"os"
 
 	myLogger "github.com/naka-gawa/pingo/pkg/logger"
 	"go.uber.org/zap"
 )
+
+type icmpEchoPacket struct {
+	Type     byte
+	Code     byte
+	Checksum uint16
+	Identify uint16
+	Sequence uint16
+	Data     []byte
+}
 
 func checkArgs(args []string) string {
 	if len(args) != 2 {
@@ -25,7 +35,14 @@ func checkArgs(args []string) string {
 	return ipAddr
 }
 
+func pinger(id uint16) {
+	fmt.Println(id)
+}
+
 func main() {
 	myLogger.InitialConfig()
 	checkArgs(os.Args)
+
+	id := uint16(os.Getpid())
+	pinger(id)
 }
